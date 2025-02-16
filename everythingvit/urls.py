@@ -19,9 +19,11 @@ from django.urls import path, include
 from django.conf.urls.static import static
 from django.conf import settings
 from authy.views import UserProfile
+from django.contrib.auth import views as authViews
 
 
 urlpatterns = [
+    path('',authViews.LoginView.as_view(template_name='login.html'), name='login'),
     path('admin/', admin.site.urls),
     path('post/', include('post.urls')),
     path('user/', include('authy.urls')),
