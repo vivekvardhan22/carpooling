@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="container">
+    <!-- Search form at top -->
+    <div class="box mb-5">
+        <form method="GET" action="{% url 'search_results' %}" class="columns is-multiline">
+            {% for field in form %}
+            <div class="column is-one-third">
+                <div class="field">
+                    <div class="control">
+                        {{ field }}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+            <div class="column is-full">
+                <button type="submit" class="button is-primary">Refine Search</button>
+            </div>
+        </form>
+    </div>
+    <!-- Results -->
+    <div class="columns is-mobile is-multiline is-centered">
+        {% if posts %}
+            {% for post in posts %}
+                <div class="column is-one-third">
+                    <div class="box">
+                        <article class="media">
+                            <div class="media-content">
+                                <div class="content">
+                                    <p>
+                                        <strong>{{ post.user.username }}</strong>
+                                        <br>
+                                        <strong>From:</strong> {{ post.leaving_from }}
+                                        <br>
+                                        <strong>To:</strong> {{ post.going_to }}
+                                        <br>
+                                        <strong>When:</strong> {{ post.date_time|date:"M d, Y H:i" }}
+                                        <br>
+                                        <strong>Transport:</strong> {{ post.transport_mode|title }}
+                                    </p>
+                                    <a href="{{ post.get_absolute_url }}" class="button is-info is-light is-small">View Details</a>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="column is-full">
+                <div class="notification is-info">
+                    No trips found matching your search criteria.
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

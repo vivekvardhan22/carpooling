@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="columns is-multiline is-centered">
+  <div class="column is-half">
+    
+    {% for post_item in post_items %}
+    <a href="{{ post_item.get_absolute_url }}">
+      <div class="card">
+        <div class="card-content">
+          <div class="media">
+            <div class="media-left">
+              <figure class="image is-48x48">
+                {% if post_item.user.profile and post_item.user.profile.profile_picture %}
+                  <img src="{{ post_item.user.profile.profile_picture.url }}" alt="{{ post_item.user.username }}'s profile picture" />
+                {% else %}
+                  <img src="https://hds.hel.fi/images/foundation/visual-assets/placeholders/user-image-l@2x.png" alt="Placeholder image" />
+                {% endif %}
+              </figure>
+            </div>
+            <div class="media-content">
+
+             
+             
+              <p  class="subtitle is-6">@{{ post_item.user.username }}</p>
+              
+            </div>
+          </div>
+
+          <div class="content">
+            <p><strong>Leaving From:</strong> {{ post_item.leaving_from }}</p>
+            <p><strong>Going To:</strong> {{ post_item.going_to }}</p>
+            <p><strong>Date and Time:</strong> {{ post_item.date_time|date:"F j, Y, g:i a" }}</p>
+            <p><strong>Transport Mode:</strong> {{ post_item.transport_mode }}</p>
+            <hr>
+            <p>{{ post_item.content|slice:":20" }}...</p>
+
+            <p>
+              {% for tag in post_item.tags.all %}
+                <a href="{{ tag.get_absolute_url }}">#{{ tag }}</a>
+              {% endfor %}
+            </p>
+
+           
+          </div>
+        </div>
+      </div>
+    </a>
+    {% endfor %}
+    
+  </div>
+</div>
+{% endblock %}

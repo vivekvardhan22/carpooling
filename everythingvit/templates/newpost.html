@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="columns is-mobile has-text-centered">
+  <div class="column is-half is-offset-one-quarter">
+    <div class="card">
+      <div class="card-content">
+        <form method="post" action="" enctype="multipart/form-data" role="form">
+          {% csrf_token %}
+          <h3 class="title is-1">Post Trip</h3>
+
+          <!-- Leaving From Field -->
+          <div class="field">
+            <label class="label is-medium">Leaving From</label>
+            <div class="control">
+              {{ form.leaving_from }}
+            </div>
+          </div>
+
+          <!-- Going To Field -->
+          <div class="field">
+            <label class="label is-medium">Going To</label>
+            <div class="control">
+              {{ form.going_to }}
+            </div>
+          </div>
+
+          <!-- Date and Time Field -->
+          <div class="field">
+            <label class="label is-medium">Date and Time</label>
+            <div class="control">
+              {{ form.date_time }}
+            </div>
+          </div>
+
+          <!-- Transport Mode Field -->
+          <div class="field">
+            <label class="label is-medium">Transport Mode</label>
+            <div class="control">
+              {{ form.transport_mode }}
+            </div>
+          </div>
+
+          <!-- Content Field -->
+          <div class="field">
+            <label class="label is-medium">Content</label>
+            <div class="control">
+              {{ form.content }}
+            </div>
+          </div>
+
+          <!-- Tags Field -->
+          <div class="field">
+            <label class="label is-medium">Tags (Separate by commas)</label>
+            <div class="control">
+              {{ form.tags }}
+            </div>
+          </div>
+
+          <!-- Submit Button -->
+          <div class="field">
+            <p class="control">
+              <button type="submit" name="action" class="button is-success">
+                Create Trip
+              </button>
+            </p>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

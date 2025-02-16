@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block banner %}
+<section class="hero is-primary">
+  <div class="hero-body">
+    <div class="container">
+      <h1 style="font-size: 90px" class="title">
+        {% if tag %}
+          #{{ tag.title }}
+        {% else %}
+          Tag not found
+        {% endif %}
+      </h1>
+      <!-- For debugging -->
+      <p>Debug: {{ tag }}</p>
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block content %}
+<div class="columns is-mobile is-multiline is-centered">
+  {% for post in posts %}
+    <div class="column is-one-third">
+      <div class="box">
+        <article class="media">
+          <div class="media-content">
+            <div class="content">
+              <p>
+                <strong>{{ post.user.username }}</strong>
+                <br>
+                <strong>From:</strong> {{ post.leaving_from }}
+                <br>
+                <strong>To:</strong> {{ post.going_to }}
+                <br>
+                <strong>When:</strong> {{ post.date_time|date:"M d, Y H:i" }}
+                <br>
+                <strong>Transport:</strong> {{ post.transport_mode|title }}
+              </p>
+              <a href="{{ post.get_absolute_url }}" class="button is-info is-light is-small">View Details</a>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+  {% endfor %}
+</div>
+{% endblock %}

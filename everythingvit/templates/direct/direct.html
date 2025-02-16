@@ -1,0 +1,108 @@
+<!-- direct.html -->
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="columns is-mobile">
+    <div class="column is-one-quarter">
+        <aside class="menu">
+            <div class="is-flex is-justify-content-space-between is-align-items-center mb-4">
+                <h1 style="font-weight: bolder;">Messages</h1>
+                <br>
+                <a href="{% url 'usersearch' %}" class="button is-success">New message</a>
+            </div>
+            
+            <ul style="overflow-y: auto; height: 500px;" class="menu-list">
+                {% for message in messages %}
+                <li>
+                    <a class="{% if active_direct == message.user.username %}is-active{% endif %}" 
+                       href="{% url 'directs' message.user.username %}">
+                        <div class="box">
+                            <article class="media">
+                                <div class="media-left">
+                                    <figure class="image is-48x48">
+                                        {% if message.user.profile.picture %}
+                                            <img src="{{ message.user.profile.picture.url }}" alt="Profile picture">
+                                        {% else %}
+                                            <img src="https://hds.hel.fi/images/foundation/visual-assets/placeholders/user-image-l@2x.png" alt="Default avatar">
+                                        {% endif %}
+                                    </figure>
+                                </div>
+                                <div class="media-content">
+                                    <div class="content">
+                                        <p>
+                                            <strong>{{ message.user.profile.first_name }} {{ message.user.profile.last_name }}</strong>
+                                            <small class="clickable-username" onclick="goToProfile('{{ direct.sender.username }}')" style="cursor: pointer;" >@{{ message.user.username }}</small>
+                                            {% if message.unread %}
+                                                <span class="tag is-danger">{{ message.unread }}</span>
+                                            {% endif %}
+                                        </p>
+                                        <small>Last message: {{ message.last|timesince }} ago</small>
+                                    </div>
+                                </div>
+                            </article>
+                        </div>
+                    </a>
+                </li>
+                {% endfor %}
+            </ul>
+        </aside>
+    </div>
+
+    <div class="column">
+        {% if active_direct %}
+        <div class="box mb-4">
+            <h3 class="title is-4">Chat with {{ active_direct }}</h3>
+        </div>
+        
+        <div style="overflow-y: auto; height: 500px;" class="messages-container mb-4">
+            {% for direct in directs %}
+            <div class="box">
+                <article class="media">
+                    <div class="media-content">
+                        <div class="content">
+                            <p>
+                                <strong>{{ direct.sender.profile.first_name }} {{ direct.sender.profile.last_name }}</strong>
+                                <small class="clickable-username" onclick="goToProfile('{{ direct.sender.username }}')" style="cursor: pointer;">@{{ direct.sender.username }}</small>
+                                <small class="is-pulled-right">{{ direct.date|date:'M d, Y H:i' }}</small>
+                            </p>
+                            {{ direct.body }}
+                        </div>
+                    </div>
+                </article>
+            </div>
+            {% endfor %}
+        </div>
+
+        <form method="POST" action="{% url 'send_direct' %}" class="box">
+            {% csrf_token %}
+            <input type="hidden" name="to_user" value="{{ active_direct }}">
+            <div class="field">
+                <p class="control">
+                    <textarea class="textarea" name="body" placeholder="Type your message..." required></textarea>
+                </p>
+            </div>
+            <div class="field">
+                <p class="control">
+                    <button type="submit" class="button is-info">Send</button>
+                </p>
+            </div>
+        </form>
+        {% else %}
+        <div class="box has-text-centered">
+            <p class="title is-4">Select a conversation or start a new one</p>
+            <a href="{% url 'usersearch' %}" class="button is-success">New message</a>
+        </div>
+        {% endif %}
+        
+    </div>
+    
+</div>
+
+
+<script>
+  function goToProfile(username) {
+      window.location.href = `/${username}`;
+  }
+  </script>
+{% endblock %}

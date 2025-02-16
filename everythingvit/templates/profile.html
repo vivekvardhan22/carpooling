@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<article class="media">
+  <div class="media-left">
+    <figure class="image is-64x64">
+      {% if profile.picture %}
+        <img class="is-rounded" src="{{ profile.picture.url }}">
+        {% else %}
+        <img class="is-rounded" src="https://hds.hel.fi/images/foundation/visual-assets/placeholders/user-image-l@2x.png">
+      {% endif %}
+    </figure>
+  </div>
+  <div class="media-content">
+    <div class="content">
+      <h1 style="font-weight: bold;" class="title is-1">{% if profile.first_name %}{{ profile.first_name }} {{ profile.last_name }} {% endif %}</h1>
+      <h2 class="subtitle is-3">@{{ profile.user }}</h2>
+    </div>
+
+    <nav class="level is-mobile">
+      <div class="level-item has-text-centered">
+        {% if user.is_authenticated and user != profile.user %}
+          <a href="{% url 'newconversation' profile.user.username %}" class="button is-info">
+           
+            <span>Send Message</span>
+          </a>
+        {% endif %}
+      </div>
+    </nav>
+
+    <div class="content">
+      <p class="subtitle is-5">{% if profile.profile_info %}{{ profile.profile_info }}{% endif %}</p>
+      
+      {% if user.is_authenticated and user == profile.user %}
+        <a href="{% url 'edit-profile' %}" class="button">Edit profile</a>
+      {% endif %}
+    </div>
+  </div>
+</article>
+
+<div class="tabs is-centered">
+  <ul>
+    <li class="{% if url_name == 'profile' %}is-active{% endif %}">
+      <a href="{% url 'profile' profile.user %}">Posted Trips - {{ posts_count }}</a>
+    </li>
+  </ul>
+</div>
+
+<div class="columns is-mobile is-multiline is-centered">
+  {% for post in posts %}
+    <div class="column is-one-third">
+      <div class="box">
+        <article class="media">
+          <div class="media-content">
+            <div class="content">
+              <p>
+                <strong>From:</strong> {{ post.leaving_from }}
+                <br>
+                <strong>To:</strong> {{ post.going_to }}
+                <br>
+                <strong>When:</strong> {{ post.date_time|date:"M d, Y H:i" }}
+                <br>
+                <strong>Transport:</strong> {{ post.transport_mode|title }}
+              </p>
+              <div class="tags">
+                {% for tag in post.tags.all %}
+                  <span class="tag is-info">
+                    #{{ tag }}
+                  </span>
+                {% endfor %}
+              </div>
+              <a href="{{ post.get_absolute_url }}" class="button is-info is-light is-small">View Details</a>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+  {% empty %}
+    <div class="column is-full">
+      <h3 class="title is-3 has-text-centered">No trips posted yet!</h3>
+    </div>
+  {% endfor %}
+</div>
+{% endblock %}

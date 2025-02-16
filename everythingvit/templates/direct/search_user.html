@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="section">
+    <div class="container">
+        <h1 class="title is-2">Search Users</h1>
+        
+        <form class="box">
+            <div class="field has-addons">
+                <div class="control is-expanded">
+                    <input class="input is-medium" 
+                           name="q" 
+                           type="text" 
+                           placeholder="Search by username or name..." 
+                           value="{{ request.GET.q }}"
+                           required>
+                </div>
+                <div class="control">
+                    <button type="submit" class="button is-info is-medium">Search</button>
+                </div>
+            </div>
+        </form>
+
+        {% if request.GET.q %}
+            <div class="columns is-multiline">
+                {% for user in users %}
+                <div class="column is-one-third">
+                    <div class="box">
+                        <article class="media">
+                            <div class="media-left">
+                                <figure class="image is-64x64">
+                                    {% if user.profile.picture %}
+                                        <img src="{{ user.profile.picture.url }}" alt="Profile picture">
+                                    {% else %}
+                                        <img src="https://hds.hel.fi/images/foundation/visual-assets/placeholders/user-image-l@2x.png" alt="Default avatar">
+                                    {% endif %}
+                                </figure>
+                            </div>
+                            <div class="media-content">
+                                <div class="content">
+                                    <p>
+                                        <strong>{{ user.profile.first_name }} {{ user.profile.last_name }}</strong>
+                                        <br>
+                                        <small>@{{ user.username }}</small>
+                                    </p>
+                                    <a href="{% url 'newconversation' user.username %}" 
+                                       class="button is-info is-small">
+                                        Send message
+                                    </a>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="column">
+                    <div class="notification is-warning">
+                        No users found matching your search.
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            {% if users.has_other_pages %}
+            <nav class="pagination is-centered" role="navigation" aria-label="pagination">
+                {% if users.has_previous %}
+                    <a class="pagination-previous" href="?q={{ query }}&page={{ users.previous_page_number }}">Previous</a>
+                {% endif %}
+                {% if users.has_next %}
+                    <a class="pagination-next" href="?q={{ query }}&page={{ users.next_page_number }}">Next</a>
+                {% endif %}
+            </nav>
+            {% endif %}
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
