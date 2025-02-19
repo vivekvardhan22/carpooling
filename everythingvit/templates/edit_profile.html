@@ -1,69 +1,82 @@
 {% extends 'base.html' %}
 {% load static %}
 
-        
 {% block content %}
-
-<div class="columns is-mobile">
-  <div class="column is-half is-offset-one-quarter">
+<div class="columns is-centered">
+  <div class="column is-half-tablet is-full-mobile">
 
     <div class="card">
-    <div class="card-content">
+      <div class="card-content">
 
-      
-    <form method="post" enctype="multipart/form-data" action="" role="form">
-      {% csrf_token %}
-    <h3 class="title is-3">Edit Profile</h3>
+        <form method="post" enctype="multipart/form-data" action="" role="form">
+          {% csrf_token %}
+          <h3 class="title is-3 has-text-centered">Edit Profile</h3>
 
+          <!-- Profile Picture -->
           <div class="field">
-              <label class="label is-medium">Choose your picture</label>
+              <label class="label">Choose your picture</label>
               <div class="file is-boxed">
                 {{ form.picture }}
               </div>
           </div>
 
+          <!-- First Name -->
           <div class="field">
-              <label class="label is-medium">First name</label>
+              <label class="label">First Name</label>
               <div class="control">
                 {{ form.first_name }}
               </div>
           </div>
 
+          <!-- Last Name -->
           <div class="field">
-              <label class="label is-medium">Last name</label>
+              <label class="label">Last Name</label>
               <div class="control">
                 {{ form.last_name }}
               </div>
           </div>
 
-        
+          <!-- Bio -->
           <div class="field">
-              <label class="label is-medium">BIO</label>
+              <label class="label">BIO</label>
               <div class="control">
                 {{ form.profile_info }}
               </div>
           </div>
 
-      <div class="row">
-        <div class="col s12">
-          <span style="color: red; font-weight: bold;">{{ form.errors }}</span>
-        </div>
+          <!-- Error Messages -->
+          {% if form.errors %}
+          <div class="notification is-danger">
+            {{ form.errors }}
+          </div>
+          {% endif %}
+
+          <!-- Update Button -->
+          <div class="field">
+            <p class="control has-text-centered">
+              <button type="submit" class="button is-success is-fullwidth">
+                Update Profile
+              </button>
+            </p>
+          </div>
+
+        </form>
+
       </div>
-
-
-      <div class="field">
-      <p class="control">
-        <button type="submit" value="login" class="button is-success">
-          Update
-        </button>
-      </p>
     </div>
 
-    </form>
   </div>
 </div>
 
-  </div>
-</div>
-
+<!-- Mobile Styling Fixes -->
+<style>
+  @media screen and (max-width: 768px) {
+    .card {
+      padding: 15px;
+    }
+    .title {
+      font-size: 1.5rem;
+    }
+  }
+</style>
 {% endblock %}
