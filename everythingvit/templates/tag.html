@@ -5,24 +5,22 @@
 <section class="hero is-primary">
   <div class="hero-body">
     <div class="container">
-      <h1 style="font-size: 90px" class="title">
+      <h1 class="title" style="font-size: 2.5rem;">
         {% if tag %}
           #{{ tag.title }}
         {% else %}
           Tag not found
         {% endif %}
       </h1>
-      <!-- For debugging -->
-      <p>Debug: {{ tag }}</p>
     </div>
   </div>
 </section>
 {% endblock %}
 
 {% block content %}
-<div class="columns is-mobile is-multiline is-centered">
+<div class="columns is-multiline is-centered">
   {% for post in posts %}
-    <div class="column is-one-third">
+    <div class="column is-full-mobile is-half-tablet is-one-third-desktop">
       <div class="box">
         <article class="media">
           <div class="media-content">
@@ -46,4 +44,16 @@
     </div>
   {% endfor %}
 </div>
+
+<!-- Mobile Styling Fixes -->
+<style>
+  @media screen and (max-width: 768px) {
+    .box {
+      padding: 10px;
+    }
+    .content p {
+      font-size: 1rem;
+    }
+  }
+</style>
 {% endblock %}
