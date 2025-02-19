@@ -12,7 +12,7 @@ class Message(models.Model):
     is_read = models.BooleanField(default=False)
 
     class Meta:
-        ordering = ['-date']  # This will ensure messages are always ordered by date
+        ordering = ['date']  # This will ensure messages are always ordered by date
 
     @staticmethod
     def send_message(from_user, to_user, body):
@@ -42,8 +42,8 @@ class Message(models.Model):
         messages = Message.objects.filter(user=user)\
             .values('recipient')\
             .annotate(last=Max('date'))\
-            .order_by('-last')
-        
+            .order_by('last')  # Changed from '-last' to 'last' for ASCENDING order
+
         users = []
         for message in messages:
             users.append({
