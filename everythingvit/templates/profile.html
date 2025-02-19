@@ -4,38 +4,23 @@
 {% block content %}
 <article class="media">
   <div class="media-left">
-    <figure class="image is-64x64">
-      {% if profile.picture %}
-        <img class="is-rounded" src="{{ profile.picture.url }}">
-        {% else %}
-        <img class="is-rounded" src="https://hds.hel.fi/images/foundation/visual-assets/placeholders/user-image-l@2x.png">
-      {% endif %}
+    <figure class="image is-128x128">
+      <img src="{% if profile.picture %}{{ profile.picture.url }}{% else %}https://hds.hel.fi/images/foundation/visual-assets/placeholders/user-image-l@2x.png{% endif %}" alt="Profile picture">
+
     </figure>
   </div>
   <div class="media-content">
     <div class="content">
-      <h1 style="font-weight: bold;" class="title is-1">{% if profile.first_name %}{{ profile.first_name }} {{ profile.last_name }} {% endif %}</h1>
-      <h2 class="subtitle is-3">@{{ profile.user }}</h2>
+      <h1 class="title is-3">{{ profile.first_name }} {{ profile.last_name }}</h1>
+      <h2 class="subtitle is-5">@{{ profile.user }}</h2>
+      <p class="subtitle is-6">{{ profile.profile_info }}</p>
     </div>
-
-    <nav class="level is-mobile">
-      <div class="level-item has-text-centered">
-        {% if user.is_authenticated and user != profile.user %}
-          <a href="{% url 'newconversation' profile.user.username %}" class="button is-info">
-           
-            <span>Send Message</span>
-          </a>
-        {% endif %}
-      </div>
-    </nav>
-
-    <div class="content">
-      <p class="subtitle is-5">{% if profile.profile_info %}{{ profile.profile_info }}{% endif %}</p>
-      
-      {% if user.is_authenticated and user == profile.user %}
-        <a href="{% url 'edit-profile' %}" class="button">Edit profile</a>
-      {% endif %}
-    </div>
+    {% if user.is_authenticated and user != profile.user %}
+      <a href="{% url 'newconversation' profile.user.username %}" class="button is-info">Send Message</a>
+    {% endif %}
+    {% if user.is_authenticated and user == profile.user %}
+      <a href="{% url 'edit-profile' %}" class="button is-light">Edit Profile</a>
+    {% endif %}
   </div>
 </article>
 
@@ -49,25 +34,20 @@
 
 <div class="columns is-mobile is-multiline is-centered">
   {% for post in posts %}
-    <div class="column is-one-third">
+    <div class="column is-half-mobile is-one-third-tablet is-one-quarter-desktop">
       <div class="box">
         <article class="media">
           <div class="media-content">
             <div class="content">
               <p>
-                <strong>From:</strong> {{ post.leaving_from }}
-                <br>
-                <strong>To:</strong> {{ post.going_to }}
-                <br>
-                <strong>When:</strong> {{ post.date_time|date:"M d, Y H:i" }}
-                <br>
+                <strong>From:</strong> {{ post.leaving_from }} <br>
+                <strong>To:</strong> {{ post.going_to }} <br>
+                <strong>When:</strong> {{ post.date_time|date:"M d, Y H:i" }} <br>
                 <strong>Transport:</strong> {{ post.transport_mode|title }}
               </p>
               <div class="tags">
                 {% for tag in post.tags.all %}
-                  <span class="tag is-info">
-                    #{{ tag }}
-                  </span>
+                  <span class="tag is-info">#{{ tag }}</span>
                 {% endfor %}
               </div>
               <a href="{{ post.get_absolute_url }}" class="button is-info is-light is-small">View Details</a>
@@ -82,4 +62,21 @@
     </div>
   {% endfor %}
 </div>
+
+<style>
+  /* Make sure the body doesn't have extra scrolling issues */
+  html, body {
+    overflow-x: hidden;
+  }
+
+  /* Ensure consistent image sizes */
+  .media-left figure img {
+    object-fit: cover;
+  }
+
+  /* Fix post card height */
+  .box {
+    min-height: 180px; /* Adjust if needed */
+  }
+</style>
 {% endblock %}
