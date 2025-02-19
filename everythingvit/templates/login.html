@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Hello Bulma!</title>
+    <title>Login</title>
     <link rel="stylesheet" href="{% static 'css/bulma.min.css' %}">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20,100,1,200&icon_names=favorite,home,search,settings" rel="stylesheet" />
   </head>
@@ -13,77 +13,82 @@
 
     <section class="section">
       <div class="container">
+        <div class="columns is-centered">
+          <div class="column is-half-tablet is-full-mobile">
 
-    <div class="columns is-mobile">
-      <div class="column is-half is-offset-one-quarter">
-
-        <div class="card">
-          <div class="card-content">
-      
+            <div class="card">
+              <div class="card-content">
+        
                 <form method="post" action="" role="form">
-                {% csrf_token %}
-                 <h3 class="title is-3">Login</h3>
-      
+                  {% csrf_token %}
+                  <h3 class="title is-3 has-text-centered">Login</h3>
+
+                  <!-- Username Field -->
                   <div class="field">
-                    <p class="control has-icons-left">
-                    <label class="label is-medium">Username</label>
+                    <label class="label">Username</label>
+                    <div class="control has-icons-left">
                       {{ form.username }}
                       <span class="icon is-small is-left">
-                  <i class="fas fa-lock"></i>
-                </span>
-              </p>
-                </div>
-      
-                    <div class="field">
-                    <p class="control has-icons-left">
-                    <label class="label is-medium">Password</label>
+                        <i class="fas fa-user"></i>
+                      </span>
+                    </div>
+                  </div>
+
+                  <!-- Password Field -->
+                  <div class="field">
+                    <label class="label">Password</label>
+                    <div class="control has-icons-left">
                       {{ form.password }}
                       <span class="icon is-small is-left">
-                  <i class="fas fa-lock"></i>
-                </span>
-              </p>
-                </div>
-      
-            {% if form.errors %}
-            <div class="row">
-              <div class="col s12">
-                <span style="color: red; font-weight: bold;">Your username or password did not match.</span>
+                        <i class="fas fa-lock"></i>
+                      </span>
+                    </div>
+                  </div>
+
+                  <!-- Error Message -->
+                  {% if form.errors %}
+                    <div class="notification is-danger">
+                      Your username or password did not match.
+                    </div>
+                  {% endif %}
+
+                  <!-- Login Button -->
+                  <div class="field">
+                    <p class="control has-text-centered">
+                      <button type="submit" class="button is-success is-fullwidth">
+                        Login
+                      </button>
+                    </p>
+                  </div>
+
+                  <input type="hidden" name="next" value="{{ next }}">
+
+                  <!-- Signup Link -->
+                  <p class="has-text-centered">
+                    <a href="{% url 'signup' %}" class="button is-info is-fullwidth">Create an account</a>
+                  </p>
+
+                </form>
+
               </div>
             </div>
-            {% endif %}
-      
-            <div class="field">
-            <p class="control">
-              <button type="submit" value="login" class="button is-success">
-                Login
-              </button>
-              
-            </p>
-          </div>
-      
-          <input type="hidden" name="next" value="{{ next }}">
-      
-      
-      
-          <a href="{% url 'signup' %}" class="button is-info">Create an account</a>
-      
-      
-        </form>
-      
-      
-      
-      
-          </div>
-          </div>
 
+          </div>
+        </div>
       </div>
-    </div>
+    </section>
 
-  </div>
-</section>
+    <!-- Mobile Styling Fixes -->
+    <style>
+      @media screen and (max-width: 768px) {
+        .card {
+          padding: 15px;
+        }
+        .title {
+          font-size: 1.5rem;
+        }
+      }
+    </style>
 
-
-
-</body>
+  </body>
 </html>
-
