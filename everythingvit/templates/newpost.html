@@ -2,17 +2,17 @@
 {% load static %}
 
 {% block content %}
-<div class="columns is-mobile has-text-centered">
-  <div class="column is-half is-offset-one-quarter">
+<div class="columns is-centered">
+  <div class="column is-half-tablet is-full-mobile">
     <div class="card">
       <div class="card-content">
         <form method="post" action="" enctype="multipart/form-data" role="form">
           {% csrf_token %}
-          <h3 class="title is-1">Post Trip</h3>
+          <h3 class="title is-3 has-text-centered">Post Trip</h3>
 
           <!-- Leaving From Field -->
           <div class="field">
-            <label class="label is-medium">Leaving From</label>
+            <label class="label">Leaving From</label>
             <div class="control">
               {{ form.leaving_from }}
             </div>
@@ -20,7 +20,7 @@
 
           <!-- Going To Field -->
           <div class="field">
-            <label class="label is-medium">Going To</label>
+            <label class="label">Going To</label>
             <div class="control">
               {{ form.going_to }}
             </div>
@@ -28,7 +28,7 @@
 
           <!-- Date and Time Field -->
           <div class="field">
-            <label class="label is-medium">Date and Time</label>
+            <label class="label">Date and Time</label>
             <div class="control">
               {{ form.date_time }}
             </div>
@@ -36,7 +36,7 @@
 
           <!-- Transport Mode Field -->
           <div class="field">
-            <label class="label is-medium">Transport Mode</label>
+            <label class="label">Transport Mode</label>
             <div class="control">
               {{ form.transport_mode }}
             </div>
@@ -44,7 +44,7 @@
 
           <!-- Content Field -->
           <div class="field">
-            <label class="label is-medium">Content</label>
+            <label class="label">Content</label>
             <div class="control">
               {{ form.content }}
             </div>
@@ -52,7 +52,7 @@
 
           <!-- Tags Field -->
           <div class="field">
-            <label class="label is-medium">Tags (Separate by commas)</label>
+            <label class="label">Tags (Separate by commas)</label>
             <div class="control">
               {{ form.tags }}
             </div>
@@ -60,8 +60,8 @@
 
           <!-- Submit Button -->
           <div class="field">
-            <p class="control">
-              <button type="submit" name="action" class="button is-success">
+            <p class="control has-text-centered">
+              <button type="submit" name="action" class="button is-success is-fullwidth">
                 Create Trip
               </button>
             </p>
@@ -71,4 +71,16 @@
     </div>
   </div>
 </div>
+
+<!-- Responsive Fixes -->
+<style>
+  @media screen and (max-width: 768px) {
+    .card {
+      padding: 10px;
+    }
+    .title {
+      font-size: 1.5rem;
+    }
+  }
+</style>
 {% endblock %}
