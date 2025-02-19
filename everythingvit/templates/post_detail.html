@@ -1,97 +1,87 @@
 {% extends 'base.html' %}
-
 {% load static %}
 
-
 {% block content %}
-<div class="columns is-mobile is-centered">
-  <div class="column">
+<div class="columns is-centered">
+  <div class="column is-half-tablet is-full-mobile">
     <div class="card">
       <div class="card-content">
         <div class="media">
           <div class="media-left">
-            <figure class="image is-48x48">
+            <figure class="image is-64x64">
               {% if post.user.profile.picture %}
-                <img src="{{ post.user.profile.picture.url }}" alt="Profile picture">
+                <img class="is-rounded" src="{{ post.user.profile.picture.url }}" alt="Profile picture">
               {% else %}
-                <img src="https://hds.hel.fi/images/foundation/visual-assets/placeholders/user-image-l@2x.png" alt="Default profile">
+                <img class="is-rounded" src="https://hds.hel.fi/images/foundation/visual-assets/placeholders/user-image-l@2x.png" alt="Default profile">
               {% endif %}
             </figure>
           </div>
 
           <div class="media-content">
-            <a  href="{% url 'profile' post.user %}" >
-            {% if post.user.profile.first_name %}
-              <p class="title is-4">{{ post.user.profile.first_name }} {{ post.user.profile.last_name }}</p>
-            {% else %}
-              <p class="title is-4">Unknown</p>
-            {% endif %}
-            <p class="subtitle is-6">@{{ post.user.username }}</p>
-            </a>
-            <hr>
-
-            <div class="content">
-              <div class="field">
-                
-                <div class="control">
-                  <p><strong>From:</strong> {{ post.leaving_from }}</p>
-                  <p><strong>To:</strong> {{ post.going_to }}</p>
-                  <p><strong>Date & Time:</strong> {{ post.date_time }}</p>
-                  <p><strong>Transport Mode:</strong> {{ post.transport_mode|title }}</p>
-                </div>
-              </div>
-              <hr>
-
-              <script>
-                function wrapText(text, maxChars) {
-                  let result = '';
-                  for (let i = 0; i < text.length; i += maxChars) {
-                    result += text.slice(i, i + maxChars) + '<br>';
-                  }
-                  return result;
-                }
-              
-                document.addEventListener('DOMContentLoaded', () => {
-                  const contentElement = document.querySelector('.trip-details');
-                  const originalContent = contentElement.textContent;
-                  contentElement.innerHTML = wrapText(originalContent, 100);
-                });
-              </script>
-              
-              <p class="trip-details">{{ post.content }}</p>
-              
-              
-              </div>
-              <hr>
-
-              <div class="tags">
-                {% for tag in post.tags.all %}
-                  <span class="tag is-info">
-                    <a href="{{ tag.get_absolute_url }}" class="has-text-white">#{{ tag }}</a>
-                  </span>
-                {% endfor %}
-              </div>
-
-              <br>
-              <strong><small>Posted: {{ post.posted }}</small></strong>
-            </div>
-          </div>
-
-          {% if favorited %}
-          <div class="media-right">
-            <a href="{% url 'postfavorite' post.id %}" class="button is-danger is-light">
-              <span class="icon">
-                <i class="material-icons">save_alt</i>
-              </span>
-              <span>Remove Post</span>
+            <a href="{% url 'profile' post.user %}">
+              {% if post.user.profile.first_name %}
+                <p class="title is-4">{{ post.user.profile.first_name }} {{ post.user.profile.last_name }}</p>
+              {% else %}
+                <p class="title is-4">Unknown</p>
+              {% endif %}
+              <p class="subtitle is-6">@{{ post.user.username }}</p>
             </a>
           </div>
-          
-          
-          {% endif %}
         </div>
+
+        <hr>
+
+        <div class="content">
+          <p><strong>From:</strong> {{ post.leaving_from }}</p>
+          <p><strong>To:</strong> {{ post.going_to }}</p>
+          <p><strong>Date & Time:</strong> {{ post.date_time }}</p>
+          <p><strong>Transport Mode:</strong> {{ post.transport_mode|title }}</p>
+        </div>
+
+        <hr>
+
+        <p class="trip-details">{{ post.content }}</p>
+
+        <hr>
+
+        <div class="tags">
+          {% for tag in post.tags.all %}
+            <span class="tag is-info">
+              <a href="{{ tag.get_absolute_url }}" class="has-text-white">#{{ tag }}</a>
+            </span>
+          {% endfor %}
+        </div>
+
+        <br>
+        <strong><small>Posted: {{ post.posted }}</small></strong>
+
+        {% if favorited %}
+        <div class="has-text-centered mt-3">
+          <a href="{% url 'postfavorite' post.id %}" class="button is-danger is-light">
+            <span class="icon">
+              <i class="material-icons">save_alt</i>
+            </span>
+            <span>Remove Post</span>
+          </a>
+        </div>
+        {% endif %}
       </div>
     </div>
   </div>
 </div>
+
+<!-- Mobile Styling Fixes -->
+<style>
+  @media screen and (max-width: 768px) {
+    .card {
+      padding: 15px;
+    }
+    .title {
+      font-size: 1.5rem;
+    }
+    .trip-details {
+      word-wrap: break-word;
+    }
+  }
+</style>
 {% endblock %}
