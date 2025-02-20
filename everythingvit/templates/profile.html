@@ -6,7 +6,6 @@
   <div class="media-left">
     <figure class="image is-128x128">
       <img src="{% if profile.picture %}{{ profile.picture.url }}{% else %}https://hds.hel.fi/images/foundation/visual-assets/placeholders/user-image-l@2x.png{% endif %}" alt="Profile picture">
-
     </figure>
   </div>
   <div class="media-content">
@@ -32,9 +31,10 @@
   </ul>
 </div>
 
-<div class="columns is-mobile is-multiline is-centered">
+<!-- Post Grid Layout -->
+<div class="columns is-multiline is-centered">
   {% for post in posts %}
-    <div class="column is-half-mobile is-one-third-tablet is-one-quarter-desktop">
+    <div class="column is-full-mobile is-half-tablet is-one-third-desktop">
       <div class="box">
         <article class="media">
           <div class="media-content">
@@ -63,20 +63,16 @@
   {% endfor %}
 </div>
 
+<!-- Mobile Styling Fixes -->
 <style>
-  /* Make sure the body doesn't have extra scrolling issues */
-  html, body {
-    overflow-x: hidden;
-  }
-
-  /* Ensure consistent image sizes */
-  .media-left figure img {
-    object-fit: cover;
-  }
-
-  /* Fix post card height */
-  .box {
-    min-height: 180px; /* Adjust if needed */
+  /* Fix layout on smaller screens */
+  @media screen and (max-width: 768px) {
+    .box {
+      padding: 10px;
+    }
+    .content p {
+      font-size: 1rem;
+    }
   }
 </style>
 {% endblock %}
