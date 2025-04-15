@@ -1,12 +1,14 @@
 {
-    "builds": [{
-        "src": "everythingvit/wsgi.py",
-        "use": "@vercel/python"
-    }],
-    "routes": [
-        {
-            "src": "/(.*)",
-            "dest": "everythingvit/wsgi.py"
-        }
-    ]
+  "builds": [
+    {
+      "src": "carpooling/wsgi.py",
+      "use": "@vercel/python"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "carpooling/wsgi.py"
+    }
+  ]
 }
